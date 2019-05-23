@@ -1,0 +1,29 @@
+#! /bin/bash
+# Decalre variables
+ProductLine=PL
+ProductComponent=PC
+Provisioner=aws-cli
+OwnerContact=owner@example.com
+MaintenanceContact=owner@hobsons.com
+aws_profile=profile1
+region=us-east-1
+
+# Get all the queues as a varaible to loop over
+# Get all the queues as a varaible to loop over
+queues=`aws sqs list-queues --profile $aws_profile  --output text | awk -F" " '{print $2}' | grep -i "agile"`
+for queue in $queues
+do
+name=`echo $queue | awk -F":" '{print $2}'| awk -F"//" '{print $2}'|awk -F"/" '{print $3}'`
+echo $name
+aws sqs untag-queue --profile $aws_profile --queue-url $queue --tag-keys=["Name"]
+if [[ $queue == *"qa"* ]]; then
+    aws sqs tag-queue  --profile $aws_profile --queue-url $queue --tags Name=$name,EnvType="qa",ProductLine=$ProductLine
+elif [[ $queue == *"prod"* ]]; then
+    aws sqs tag-queue  --profile $aws_profile --queue-url $queue --tags Name=$name,EnvType="prod",ProductLine=$ProductLine
+elif [[ $queue == *"dev"* ]]; then
+    aws sqs tag-queue  --profile $aws_profile --queue-url $queue --tags Name=$name,EnvType="dev",ProductLine=$ProductLine
+else 
+    aws sqs tag-queue  --profile $aws_profile --queue-url $queue --tags Name=$name,EnvType="",ProductLine=$ProductLine
+fi
+done
+done
