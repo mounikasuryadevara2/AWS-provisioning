@@ -1,0 +1,17 @@
+#you will want to run ansible-playbook with -s, usermod commonly wants wheel
+- hosts: ops
+  strategy: free
+  tasks:
+  - name: User - Mounika Suryadevara
+    user:
+      name=mounika.suryadevara
+      comment="Mounika Suryadevara"
+      groups=wheel
+      state=present
+      remove=yes
+  - name: Adding key 1 for Mounika Suryadevara
+    authorized_key:
+      user=mounika.suryadevara
+      state=present
+      key="<publickey>"
+    ignore_errors: yes
