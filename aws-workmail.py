@@ -75,9 +75,9 @@ class AWSMailbox:
             try:
                 response1 = self.boto3_client.register_to_work_mail(
                                                                     
-                                                                    OrganizationId =self.organization_id,
-                                                                    EntityId =user_id_created,
-                                                                    Email =self.user_id+"@" + self.subdomain
+                                                                    OrganizationId=self.organization_id,
+                                                                    EntityId=user_id_created,
+                                                                    Email=self.user_id+"@" + self.subdomain
                                                                     )
                 self.rootLogger.info("Successfully registered in the domain user id : " + user_id_created)
             except ClientError as e:
