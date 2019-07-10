@@ -1,6 +1,6 @@
 # AWS-provisioning
 
-aws-workmail.py: This is a module to create workmail for users on AWS.
+create_single_tenant: This is a module to create workmail for users on AWS.
 
 sqs-tag: To tag SQS queues from AWS-cli
 
